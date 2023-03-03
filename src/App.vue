@@ -1,27 +1,36 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div>
+    <SiteHeader/>
+
+    <main class="content container">
+      <router-view/>
+    </main>
+
+    <SiteFooter/>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue';
+  import SiteHeader from '@/components/site/SiteHeader.vue';
+  import SiteFooter from '@/components/site/SiteFooter.vue';
+  import { mapActions, mapMutations } from 'vuex';
 
-export default {
-  name: 'App',
-  components: {
-    HelloWorld,
-  },
-};
+  export default {
+    name: 'App',
+    components: {
+      SiteHeader,
+      SiteFooter,
+    }, // components
+    created() {
+      const userAccessKey = localStorage.getItem('userAccessKey');
+      if (userAccessKey) {
+        this.updateUserAccessKey(userAccessKey);
+      }
+      this.loadCart();
+    },
+    methods: {
+      ...mapActions(['loadCart']),
+      ...mapMutations(['updateUserAccessKey']),
+    },
+  };
 </script>
-
-<style lang="stylus">
-#app
-  font-family Avenir, Helvetica, Arial, sans-serif
-  -webkit-font-smoothing antialiased
-  -moz-osx-font-smoothing grayscale
-  text-align center
-  color #2c3e50
-  margin-top 60px
-</style>
